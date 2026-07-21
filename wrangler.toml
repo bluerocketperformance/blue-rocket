@@ -1,0 +1,16 @@
+name = "blue-rocket"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+workers_dev = true
+
+# Serve everything in ./public as static assets. Requests that match a file are
+# served directly; anything else (e.g. /api/contact) falls through to the Worker.
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+# Non-secret vars can live here. Secrets (RESEND_API_KEY) are set with:
+#   npx wrangler secret put RESEND_API_KEY
+[vars]
+CONTACT_TO = "bluerocketperformance@gmail.com"
+CONTACT_FROM = "Blue Rocket <onboarding@resend.dev>"

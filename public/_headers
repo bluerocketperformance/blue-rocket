@@ -1,0 +1,20 @@
+# Cloudflare Workers assets headers
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+
+# HTML / CSS / JS: always revalidate so updates show immediately
+/
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
+/styles.css
+  Cache-Control: no-cache
+/main.js
+  Cache-Control: no-cache
+
+# Images can cache for a day
+/assets/*
+  Cache-Control: public, max-age=86400

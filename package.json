@@ -1,0 +1,13 @@
+{
+  "name": "blue-rocket",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Blue Rocket Performance — Portland high-performance motorcycle, fabrication & Subaru STI shop.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.112.0"
+  }
+}
