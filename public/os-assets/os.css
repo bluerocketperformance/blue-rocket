@@ -1,0 +1,102 @@
+/* Blue Rocket OS — dashboard styles (matches the site's dark theme) */
+
+:root{
+  --bg:#080b12;
+  --surface:#121a28;
+  --surface-2:#16202f;
+  --line:#243044;
+  --line-2:#1a2331;
+  --blue:#3f80e6;
+  --red:#ff4034;
+  --text:#eaeef6;
+  --muted:#9aa7bd;
+  --muted-2:#66738d;
+  --font:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.5;
+  -webkit-font-smoothing:antialiased;font-size:14px}
+a{color:var(--blue)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* ---------- login ---------- */
+.login{min-height:100vh;display:grid;place-items:center;padding:16px}
+.login-card{width:100%;max-width:340px;background:var(--surface);border:1px solid var(--line);
+  border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:10px}
+.login-card img{margin:0 auto 4px}
+.login-card h1{font-size:20px;text-align:center;margin-bottom:8px}
+.login-card label{font-size:13px;color:var(--muted)}
+.login-card input{background:var(--bg);border:1px solid var(--line);border-radius:8px;
+  padding:10px 12px;color:var(--text);font:inherit}
+.login-card button{background:var(--red);border:0;border-radius:8px;padding:10px;font-weight:600;color:#fff;margin-top:6px}
+.login-card pre{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;
+  font-size:12px;overflow-x:auto}
+.login-error{color:var(--red);font-size:13px}
+
+/* ---------- header ---------- */
+.top{display:flex;align-items:center;gap:16px;padding:12px 24px;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--bg);z-index:5;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:8px;font-weight:700}
+.tabs{display:flex;gap:4px;flex:1}
+.tabs button{background:none;border:0;padding:8px 12px;border-radius:8px;color:var(--muted);font-weight:600}
+.tabs button[aria-selected="true"]{background:var(--surface-2);color:var(--text)}
+.logout{color:var(--muted);font-size:13px;text-decoration:none}
+
+/* ---------- layout ---------- */
+main#app{max-width:1200px;margin:0 auto;padding:20px 24px 60px;display:flex;flex-direction:column;gap:20px}
+.filters{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.filters span{color:var(--muted);font-size:13px;margin-right:4px}
+.chip{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;color:var(--muted)}
+.chip[aria-pressed="true"]{border-color:var(--blue);color:var(--text)}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;
+  transition:opacity .2s}
+.card.loading{opacity:.5}
+.card-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.card-head h2{font-size:16px}
+.card-head .sub{color:var(--muted-2);font-size:12px}
+.note{color:var(--muted);font-size:13px}
+.note code{background:var(--bg);border:1px solid var(--line-2);border-radius:4px;padding:1px 5px;font-size:12px}
+.error{color:var(--red)}
+
+/* ---------- stat tiles ---------- */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+.tile{background:var(--surface-2);border-radius:10px;padding:12px 14px}
+.tile .label{color:var(--muted);font-size:12px}
+.tile .value{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px}
+.tile .delta{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+
+/* ---------- charts ---------- */
+.chart{position:relative;margin-bottom:16px}
+.chart-title{color:var(--muted);font-size:12px;margin-bottom:6px}
+.chart svg{display:block;width:100%;overflow:visible}
+.chart .grid{stroke:var(--line-2);stroke-width:1}
+.chart .axis{fill:var(--muted-2);font-size:11px;font-variant-numeric:tabular-nums}
+.chart .line{fill:none;stroke:var(--blue);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.chart .hair{stroke:var(--muted-2);stroke-width:1}
+.chart .dot{fill:var(--blue);stroke:var(--surface);stroke-width:2}
+.multiples{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+
+.tooltip{position:fixed;pointer-events:none;background:var(--surface-2);border:1px solid var(--line);
+  border-radius:8px;padding:6px 10px;font-size:12px;z-index:10;box-shadow:0 4px 16px rgba(0,0,0,.4)}
+.tooltip strong{display:block;font-size:14px;font-variant-numeric:tabular-nums}
+.tooltip span{color:var(--muted)}
+
+/* ---------- tables ---------- */
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{color:var(--muted);font-weight:500;text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+td{padding:6px 8px;border-bottom:1px solid var(--line-2);font-variant-numeric:tabular-nums}
+th.num,td.num{text-align:right}
+td.text{max-width:320px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.muted{color:var(--muted-2)}
+
+@media (max-width:640px){
+  .top{padding:12px 16px}
+  main#app{padding:16px 16px 48px}
+  .card{padding:16px}
+  .split{grid-template-columns:1fr}
+}

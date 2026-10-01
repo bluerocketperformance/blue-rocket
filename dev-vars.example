@@ -1,0 +1,8 @@
+# Copy to .dev.vars (already gitignored), fill in, then: npm run push-secrets
+# NEVER commit .dev.vars or paste these values into a chat.
+OS_PASSWORD=""
+GOOGLE_CLIENT_ID=""
+GOOGLE_CLIENT_SECRET=""
+# GOOGLE_REFRESH_TOKEN is added for you by: npm run google-auth
+ADS_DEVELOPER_TOKEN=""
+SERPAPI_KEY=""

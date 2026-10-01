@@ -18,3 +18,8 @@
 # Images can cache for a day
 /assets/*
   Cache-Control: public, max-age=86400
+
+# OS dashboard assets
+/os-assets/*
+  Cache-Control: no-cache
+  X-Robots-Tag: noindex
