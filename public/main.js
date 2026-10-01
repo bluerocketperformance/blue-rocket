@@ -115,6 +115,8 @@
           status.textContent = "Thanks — we'll get back to you shortly.";
           status.classList.add("ok");
           form.reset();
+          // GA4 lead (mark "generate_lead" as a key event in GA4 Admin)
+          if (window.gtag) gtag("event", "generate_lead", { method: "quote_form" });
         } else {
           status.textContent = out.error || "Something went wrong. Please call or text us instead.";
           status.classList.add("err");
@@ -128,3 +130,11 @@
     });
   }
 })();
+
+// GA4: count phone / email taps as leads too
+document.addEventListener("click", (e) => {
+  const link = e.target.closest && e.target.closest('a[href^="tel:"], a[href^="mailto:"]');
+  if (link && window.gtag) {
+    gtag("event", "generate_lead", { method: link.href.startsWith("tel:") ? "phone" : "email" });
+  }
+});
