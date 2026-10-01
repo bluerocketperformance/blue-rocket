@@ -6,6 +6,11 @@
  *   RESEND_API_KEY  -> npx wrangler secret put RESEND_API_KEY
  *   CONTACT_TO      -> inbox for quotes (wrangler.toml [vars] or secret)
  *   CONTACT_FROM    -> a verified Resend sender (defaults to onboarding@resend.dev)
+ *
+ * EUROWERKS OS quote intake (quotes also land in the OS Inbox):
+ *   OS_QUOTE_URL         -> wrangler.toml [vars]
+ *   OS_SHOP_SLUG         -> wrangler.toml [vars] (bluerocketperformance)
+ *   QUOTE_INGEST_SECRET  -> npx wrangler secret put QUOTE_INGEST_SECRET
  */
 
 const json = (data, status = 200) =>
@@ -38,8 +43,6 @@ async function handleContact(request, env) {
 
   if (!firstName || !email || !message) return json({ error: "Missing required fields." }, 400);
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json({ error: "Invalid email address." }, 400);
-  if (!env.RESEND_API_KEY) return json({ error: "Email is not configured yet." }, 500);
-
   const to = env.CONTACT_TO || "jerryduncklee@gmail.com";
   const from = env.CONTACT_FROM || "Blue Rocket <onboarding@resend.dev>";
 
@@ -62,6 +65,19 @@ async function handleContact(request, env) {
       </div>
     </div>`;
 
+  // Email the shop and drop the quote into EUROWERKS OS at the same time.
+  // The customer gets "ok" if either one lands, so a mail hiccup never loses a lead.
+  const [mail, os] = await Promise.all([
+    sendEmail(env, { from, to, replyTo: email, subject: `New quote request from ${name}`, html }),
+    sendToOs(env, { to, name, email, phone, vehicle, hear: hearAbout, message }),
+  ]);
+  if (mail.ok || os.ok) return json({ ok: true });
+  if (mail.skipped && os.skipped) return json({ error: "Email is not configured yet." }, 500);
+  return json({ error: "Could not send message.", detail: mail.detail || os.detail }, 502);
+}
+
+async function sendEmail(env, { from, to, replyTo, subject, html }) {
+  if (!env.RESEND_API_KEY) return { ok: false, skipped: true };
   try {
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -69,21 +85,32 @@ async function handleContact(request, env) {
         Authorization: `Bearer ${env.RESEND_API_KEY}`,
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({ from, to: [to], reply_to: replyTo, subject, html }),
+    });
+    if (res.ok) return { ok: true };
+    return { ok: false, detail: await res.text().catch(() => "") };
+  } catch {
+    return { ok: false, detail: "Mail service unavailable." };
+  }
+}
+
+// POST the quote to EUROWERKS OS (Inbox + quote chat + notify email for the Blue Rocket shop).
+async function sendToOs(env, quote) {
+  if (!env.OS_QUOTE_URL || !env.QUOTE_INGEST_SECRET) return { ok: false, skipped: true };
+  try {
+    const res = await fetch(env.OS_QUOTE_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        from,
-        to: [to],
-        reply_to: email,
-        subject: `New quote request from ${name}`,
-        html,
+        secret: env.QUOTE_INGEST_SECRET,
+        shop: env.OS_SHOP_SLUG || "bluerocketperformance",
+        ...quote,
       }),
     });
-    if (!res.ok) {
-      const detail = await res.text().catch(() => "");
-      return json({ error: "Could not send message.", detail }, 502);
-    }
-    return json({ ok: true });
+    if (res.ok) return { ok: true };
+    return { ok: false, detail: `OS ${res.status}: ${await res.text().catch(() => "")}` };
   } catch {
-    return json({ error: "Mail service unavailable." }, 502);
+    return { ok: false, detail: "OS unavailable." };
   }
 }
 

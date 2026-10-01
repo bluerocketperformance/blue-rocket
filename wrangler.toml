@@ -14,3 +14,7 @@ binding = "ASSETS"
 [vars]
 CONTACT_TO = "bluerocketperformance@gmail.com"
 CONTACT_FROM = "Blue Rocket <onboarding@resend.dev>"
+# Quotes also go into EUROWERKS OS. The shared secret is set with:
+#   npx wrangler secret put QUOTE_INGEST_SECRET
+OS_QUOTE_URL = "https://eurowerks-os.jdauth.workers.dev/api/inbound/quote"
+OS_SHOP_SLUG = "bluerocketperformance"
