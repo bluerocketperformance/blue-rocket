@@ -14,18 +14,3 @@ binding = "ASSETS"
 [vars]
 CONTACT_TO = "bluerocketperformance@gmail.com"
 CONTACT_FROM = "Blue Rocket <onboarding@resend.dev>"
-
-# ---- Blue Rocket OS (/os) — IDs only, these are not secret ----
-# Secrets (OS_PASSWORD, GOOGLE_*, ADS_DEVELOPER_TOKEN, SERPAPI_KEY) live in
-# .dev.vars locally and are uploaded with `npm run push-secrets`. Never here.
-GA4_PROPERTY_ID = ""             # GA4 Admin -> Property details (numbers only)
-GSC_SITE_URL = ""                # e.g. "sc-domain:bluerocketperformance.com"
-ADS_CUSTOMER_ID = ""             # Ads account ID, e.g. "123-456-7890"
-ADS_LOGIN_CUSTOMER_ID = ""       # Manager (MCC) account ID
-ADS_API_VERSION = "v25"
-SITE_DOMAIN = "bluerocketperformance.com"
-BUSINESS_NAME = "Blue Rocket"
-SERP_LOCATION = "Portland, Oregon, United States"
-SERP_KEYWORDS = "ducati repair portland,motorcycle repair portland,bmw motorcycle service portland,subaru sti tuning portland,custom fabrication portland,tig welding portland"
-TRENDS_GEO = "US-OR"
-TRENDS_KEYWORDS = "motorcycle repair,ducati,subaru sti,cobb tune,tig welding"

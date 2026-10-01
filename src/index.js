@@ -6,11 +6,7 @@
  *   RESEND_API_KEY  -> npx wrangler secret put RESEND_API_KEY
  *   CONTACT_TO      -> inbox for quotes (wrangler.toml [vars] or secret)
  *   CONTACT_FROM    -> a verified Resend sender (defaults to onboarding@resend.dev)
- *
- * The /os marketing dashboard lives in ./os.js (see that file for its secrets).
  */
-
-import { handleOs, isOsPath } from "./os.js";
 
 const json = (data, status = 200) =>
   new Response(JSON.stringify(data), {
@@ -94,7 +90,6 @@ async function handleContact(request, env) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (isOsPath(url.pathname)) return handleOs(request, env);
     if (url.pathname === "/api/contact") {
       if (request.method === "POST") return handleContact(request, env);
       return json({ error: "Method not allowed." }, 405);
